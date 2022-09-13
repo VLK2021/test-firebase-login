@@ -1,16 +1,19 @@
-import React from 'react';
-import * as firebase from 'firebase';
+import React, {useEffect} from 'react';
+import {auth, db, app} from '../../firebase.config';
 
 import './LoginFormStyle.css';
 
 
 const LoginForm = () => {
 
-    const db = firebase.database();
-    console.log(db);
+    useEffect(() => {
+        console.log(db);
+    }, [])
+
 
     const submit = (e) => {
         e.preventDefault()
+
         e.target.email.value = '';
         e.target.password.value = '';
     }
