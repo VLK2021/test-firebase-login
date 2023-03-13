@@ -1,29 +1,27 @@
-import React, {useEffect} from 'react';
-import {auth, db, app} from '../../firebase.config';
+import React from 'react';
 
 import './LoginFormStyle.css';
+import {useForm} from "react-hook-form";
 
 
 const LoginForm = () => {
+    const {register, handleSubmit} = useForm();
 
-    useEffect(() => {
-        console.log(db);
-    }, [])
+    const submit = (data) => {
 
+    };
 
-    const submit = (e) => {
-        e.preventDefault()
-
-        e.target.email.value = '';
-        e.target.password.value = '';
-    }
 
     return (
         <div className={'loginForm'}>
-            <form className={'form'} onSubmit={submit}>
-                <input type="text" placeholder={'email'} name={'email'}/>
-                <input type="password" placeholder={'password'} name={'password'}/>
-                <button>add</button>
+            <form onSubmit={handleSubmit(submit)}>
+                <label>Login:</label>
+                <input type="text" {...register('login')}/>
+
+                <label>Password:</label>
+                <input type="text" {...register('password')}/>
+
+                <button>login</button>
             </form>
         </div>
     );
