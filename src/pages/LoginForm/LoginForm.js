@@ -10,8 +10,8 @@ import {auth} from "../../firebase-config";
 
 
 const LoginForm = () => {
-    const [registerEmail, setRegisterEmail] = useState("");
-    const [registerPassword, setRegisterPassword] = useState("");
+    // const [registerEmail, setRegisterEmail] = useState("");
+    // const [registerPassword, setRegisterPassword] = useState("");
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
@@ -19,26 +19,26 @@ const LoginForm = () => {
     const [user, setUser] = useState({});
 
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        });
-        return () => unsubscribe();
-    }, []);
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    //         setUser(currentUser);
+    //     });
+    //     return () => unsubscribe();
+    // }, []);
 
 
-    const reg = async () => {
-        try {
-            const user = await createUserWithEmailAndPassword(
-                auth,
-                registerEmail,
-                registerPassword
-            );
-            console.log(user);
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
+    // const reg = async () => {
+    //     try {
+    //         const user = await createUserWithEmailAndPassword(
+    //             auth,
+    //             registerEmail,
+    //             registerPassword
+    //         );
+    //         console.log(user);
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // };
 
     const log = async () => {
         try {
@@ -61,19 +61,19 @@ const LoginForm = () => {
 
     return (
         <div>
-            <div className={'register'}>
-                <input type="text" placeholder={'email'} onChange={(e) => {
-                    e.preventDefault();
-                    setRegisterEmail(e.target.value)
-                }}/>
+            {/*<div className={'register'}>*/}
+            {/*    <input type="text" placeholder={'email'} onChange={(e) => {*/}
+            {/*        e.preventDefault();*/}
+            {/*        setRegisterEmail(e.target.value)*/}
+            {/*    }}/>*/}
 
-                <input type="text" placeholder={'password'} onChange={(e) => {
-                    e.preventDefault();
-                    setRegisterPassword(e.target.value)
-                }}/>
+            {/*    <input type="text" placeholder={'password'} onChange={(e) => {*/}
+            {/*        e.preventDefault();*/}
+            {/*        setRegisterPassword(e.target.value)*/}
+            {/*    }}/>*/}
 
-                <button onClick={reg}>Register</button>
-            </div>
+            {/*    <button onClick={reg}>Register</button>*/}
+            {/*</div>*/}
 
             <div className={'login'}>
                 <input type="text" placeholder={'email'} onChange={(e) => {
