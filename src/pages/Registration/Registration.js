@@ -1,40 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
-import {auth} from "../../firebase-config";
-
-import './RegistrationStyle.css';
+import React from 'react';
+import {createUserWithEmailAndPassword} from "firebase/auth";
 import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
+
+import {auth} from "../../firebase-config";
+import './RegistrationStyle.css';
 
 
 const Registration = () => {
-    const [registerEmail, setRegisterEmail] = useState("");
-    const [registerPassword, setRegisterPassword] = useState("");
+    const {register, handleSubmit, formState: {errors}} = useForm();
+    const navigate = useNavigate();
 
-
-
-    const {register, handleSubmit} = useForm();
-
-
-
-
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        });
-        return () => unsubscribe();
-    }, []);
-
-
-    const reg = async () => {
+    const registration = async (data) => {
         try {
             const user = await createUserWithEmailAndPassword(
                 auth,
-                registerEmail,
-                registerPassword
+                data.email,
+                data.password
             );
             console.log(user);
+            if (user) {
+                alert('you registered!')
+            }
+            navigate('/login');
         } catch (error) {
             console.log(error.message);
         }
@@ -42,39 +30,53 @@ const Registration = () => {
 
 
     return (
-        // <div>
-        //         <input type="text" placeholder={'email'} onChange={(e) => {
-        //         e.preventDefault();
-        //         setRegisterEmail(e.target.value)
-        //     }}/>
-        //
-        //         <input type="text" placeholder={'password'} onChange={(e) => {
-        //             e.preventDefault();
-        //             setRegisterPassword(e.target.value)
-        //         }}/>
-        //
-        //         <button onClick={reg}>Register</button>
-        //
-        //     <h4> User Logged In: </h4>
-        //     {user?.email}
-        // </div>
+        <div className={'registration'}>
+            <form onSubmit={handleSubmit(registration)}>
+                <div className={'registration-email'}>
+                    <label>email:</label>
+                    <div>
+                        <input type="text" {...register('email', {
+                            required: 'Поле повинно бути заповнене',
+                            minLength: {
+                                value: 8,
+                                message: 'мінімальна довжина імені 8 символів'
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: 'максимальна довжина 20 символів'
+                            },
+                        })} placeholder={'...email'}/>
+                    </div>
 
+                    <div className={'registration-error'}>
+                        {errors?.email && <p>{errors?.email?.message || 'Error'}</p>}
+                    </div>
+                </div>
 
+                <div className={'registration-password'}>
+                    <label>password:</label>
+                    <div>
+                        <input type="text" {...register('password', {
+                            required: 'Поле повинно бути заповнене',
+                            minLength: {
+                                value: 6,
+                                message: 'мінімальна довжина імені 6 символів'
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: 'максимальна довжина 20 символів'
+                            },
+                        })} placeholder={'...password'}/>
+                    </div>
 
-        <div>
-            <form onSubmit={handleSubmit(reg)}>
-                <input type="text" {...register('email')} placeholder={'...email'}/>
-                <input type="text" {...register('password')} placeholder={'...password'}/>
+                    <div className={'registration-error'}>
+                        {errors?.password && <p>{errors?.password?.message || 'Error'}</p>}
+                    </div>
+                </div>
 
-                <button>Register</button>
+                <button className={'registration-btn'}>Register</button>
             </form>
-
-            <h4> User Logged In: </h4>
-                 {user?.email}
         </div>
-
-
-
     );
 };
 

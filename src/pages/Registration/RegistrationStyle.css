@@ -1,0 +1,52 @@
+.registration {
+    width: 50rem;
+    background: grey;
+    box-shadow: 0.2rem 0.2rem 0.2rem black;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    top: 30vh;
+    padding: 1.5rem;
+}
+
+
+label {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 1.5rem;
+}
+
+input{
+    width: 95%;
+    margin: 1rem 0 1rem 0;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: midnightblue;
+}
+
+.registration-btn{
+    width: 95%;
+    text-transform: uppercase;
+    background: black;
+    color: snow;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 1.5s;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    margin-top: 2rem;
+}
+
+.registration-btn:hover{
+    background: snow;
+    color: black;
+    transform: scale(1.01, 1.01);
+
+}
+
+.registration-error{
+    font-style: italic;
+    color: red;
+    font-size: 1.2rem;
+}
