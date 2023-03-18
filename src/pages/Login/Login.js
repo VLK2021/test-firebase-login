@@ -1,38 +1,62 @@
-import React from 'react';
-import {createUserWithEmailAndPassword} from "firebase/auth";
+import React, {useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
+import {onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
 
+import './LoginStyle.css';
 import {auth} from "../../firebase-config";
-import './RegistrationStyle.css';
+import {NavLink, useNavigate} from "react-router-dom";
 
 
-const Registration = () => {
-    const {register, handleSubmit, formState: {errors}} = useForm();
+const Login = () => {
+    // const [user, setUser] = useState({});
+
+    const {register, handleSubmit, formState: {errors}, reset} = useForm();
     const navigate = useNavigate();
 
-    const registration = async (data) => {
+
+    const login = async (data) => {
         try {
-            const user = await createUserWithEmailAndPassword(
+            const user = await signInWithEmailAndPassword(
                 auth,
                 data.email,
                 data.password
             );
+            // setUser(user);
             console.log(user);
-            if (user) {
-                alert('you registered!')
-            }
-            navigate('/');
+            reset();
+
         } catch (error) {
             console.log(error.message);
+            if (error){
+                navigate('/registered')
+            }
         }
+
+    };
+
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    //         setUser(currentUser);
+    //     });
+    //     return () => unsubscribe();
+    // }, [user]);
+
+    const logout = async () => {
+        await signOut(auth);
     };
 
 
     return (
-        <div className={'registration'}>
-            <form onSubmit={handleSubmit(registration)}>
-                <div className={'registration-email'}>
+        <div className={'login'}>
+            {/*{user &&*/}
+            {/*<>*/}
+            {/*    <h4> User Logged In: </h4>*/}
+            {/*    {user?.email}*/}
+            {/*</>*/}
+            {/*}*/}
+
+            <form onSubmit={handleSubmit(login)}>
+                <div className={'login-email'}>
                     <label>email:</label>
                     <div>
                         <input type="text" {...register('email', {
@@ -48,12 +72,12 @@ const Registration = () => {
                         })} placeholder={'...email'}/>
                     </div>
 
-                    <div className={'registration-error'}>
+                    <div className={'login-error'}>
                         {errors?.email && <p>{errors?.email?.message || 'Error'}</p>}
                     </div>
                 </div>
 
-                <div className={'registration-password'}>
+                <div className={'login-password'}>
                     <label>password:</label>
                     <div>
                         <input type="text" {...register('password', {
@@ -74,10 +98,17 @@ const Registration = () => {
                     </div>
                 </div>
 
-                <button className={'registration-btn'}>Register</button>
+                <button className={'login-btn'}>Login</button>
             </form>
+
+            <NavLink to={'/registered'}>
+                <p>Реєстрація</p>
+            </NavLink>
+
+            <button onClick={logout}> Sign Out</button>
+
         </div>
     );
 };
 
-export default Registration;
+export default Login;
